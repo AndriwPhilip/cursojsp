@@ -70,6 +70,9 @@ public class FilterAutenticacao implements Filter {
 			connection.commit(); // Deu tudo certo confirma as alteraçoes no banco
 		} catch (Exception e) {
 			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
