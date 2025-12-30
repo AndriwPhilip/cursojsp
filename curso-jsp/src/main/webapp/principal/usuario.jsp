@@ -85,7 +85,7 @@
 												</div>
 											</div>
 										</div>
-
+											<span>${msg}</span>
 
 									</div>
 									<!-- Page-body end -->
