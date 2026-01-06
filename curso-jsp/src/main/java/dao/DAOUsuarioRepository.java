@@ -40,8 +40,7 @@ public class DAOUsuarioRepository {
 		ModelLogin modelLogin = new ModelLogin();
 		
 		String sql ="select * from model_login where upper(login) = upper('"+login+"')";
-		PreparedStatement statement = connection.prepareStatement(sql);
-		
+		PreparedStatement statement = connection.prepareStatement(sql);		
 		ResultSet resultado= statement.executeQuery();
 		
 		while(resultado.next()) {
@@ -56,6 +55,17 @@ public class DAOUsuarioRepository {
 		return modelLogin;
 		
 		
+	}
+	public boolean validarLogin(String login) throws Exception{
+		
+		String sql = "select count(1) > 0 as existe from model_login where upper(login) = upper('"+login+"');";
+		PreparedStatement statement = connection.prepareStatement(sql);		
+		ResultSet resultado= statement.executeQuery();
+		if(resultado.next()) {
+			return resultado.getBoolean("existe");
+		}
+		
+		return false;
 	}
 	
 }
