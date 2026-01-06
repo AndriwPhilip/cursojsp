@@ -58,11 +58,10 @@ public class ServletUsuarioController extends HttpServlet {
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
-			redirecionar.forward(request, response);
+			redirecionar.forward(request, response);//Info inutil apenas para update no git
 		}
 	}
 
