@@ -24,13 +24,32 @@ public class ServletUsuarioController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		try {
+			String acao = request.getParameter("acao");
+
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
+				
+				String idUser = request.getParameter("id");
+				daoUsuarioRepository.deletarUser(idUser);
+				request.setAttribute("msg", "Excluido com Sucesso!");			
+
+			}
+			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
+		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
-			
+
 			String msg = "Operação realizada com sucesso!";
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
@@ -46,13 +65,13 @@ public class ServletUsuarioController extends HttpServlet {
 			modelLogin.setSenha(senha);
 
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
-				
+
 				msg = "Já existe usuario com mesmo login, informe outro login";
 			} else {
-				if(modelLogin.isNovo()) {
-					msg ="Gravado com sucesso!";
-				}else {
-					msg ="Atualizado com sucesso!";
+				if (modelLogin.isNovo()) {
+					msg = "Gravado com sucesso!";
+				} else {
+					msg = "Atualizado com sucesso!";
 				}
 				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 			}
@@ -65,7 +84,7 @@ public class ServletUsuarioController extends HttpServlet {
 			e.printStackTrace();
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
-			redirecionar.forward(request, response);//Info inutil apenas para update no git
+			redirecionar.forward(request, response);
 		}
 	}
 
