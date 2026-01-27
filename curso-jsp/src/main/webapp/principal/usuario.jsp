@@ -100,13 +100,16 @@
 															<button type="button"
 																class="btn btn-info waves-effect waves-light"
 																onclick="criarDeleteComAjax()">Excluir</button>
+															<button type="button" class="btn btn-secondary"
+																data-toggle="modal" data-target="#exampleModalUsuario">
+																Pesquisar</button>
 														</form>
 
 													</div>
 												</div>
 											</div>
 										</div>
-										<span id ="msg">${msg}</span>
+										<span id="msg">${msg}</span>
 
 									</div>
 									<!-- Page-body end -->
@@ -124,36 +127,108 @@
 
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalUsuario" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLongTitle"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Pesquisa de
+						Usuario</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="Nome"
+							aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-info" type="button"
+								onclick="buscarUsuario();">BUSCAR</button>
+						</div>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<script type="text/javascript">
 	
-	
-	function criarDeleteComAjax() {
-		
-		if (confirm('Deseja realmente excluir os dados?')) {
+		function buscarUsuario() {
+
+			var nomeBusca = document.getElementById('nomeBusca').value;
+
+			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {//Validando que tem que ter valor pra buscar no banco
+
+				var urlAction = document.getElementById('formUser').action;
 			
-			var urlAction = document.getElementById('formUser').action;
-			var idUser = document.getElementById('id').value;
-			
-			$.ajax({
+				$.ajax({
+
+					method : 'get',
+					url : urlAction,
+					data : 'nomeBusca=' + nomeBusca + '&acao=buscaUserAjax',
+					success : function(response) {
+						
+					}
+
+				}).fail(
+						function(xhr, status, errorThrown) {
+							alert('Erro ao buscar usuário por nome: '
+									+ xhr.responseText);
+						});
 				
-				method: 'get',
-				url: urlAction,
-				data: 'id=' + idUser + '&acao=deletarajax' ,
-				success: function(response){
-					limparForm();
-					document.getElementById('msg').textContent = response;
-				}
-				
-			}).fail(function(xhr, status, errorThrown){
-				alert('Erro ao deletar usuário por id: ' +  xhr.responseText);
-			});
+			}
+
 		}
-		
-	}
-	
-	
-function criarDelete() {
+
+		function criarDeleteComAjax() {
+
+			if (confirm('Deseja realmente excluir os dados?')) {
+
+				var urlAction = document.getElementById('formUser').action;
+				var idUser = document.getElementById('id').value;
+
+				$.ajax({
+
+					method : 'get',
+					url : urlAction,
+					data : 'id=' + idUser + '&acao=deletarajax',
+					success : function(response) {
+						limparForm();
+						document.getElementById('msg').textContent = response;
+					}
+
+				}).fail(
+						function(xhr, status, errorThrown) {
+							alert('Erro ao deletar usuário por id: '
+									+ xhr.responseText);
+						});
+			}
+
+		}
+
+		function criarDelete() {
 
 			if (confirm('Deseja realmente excluir os dados?')) {
 
@@ -163,7 +238,7 @@ function criarDelete() {
 			}
 		}
 
-function limparForm() {
+		function limparForm() {
 
 			var elementos = document.getElementById("formUser").elements; /*Retorna os elementos html dentro do form*/
 
