@@ -150,19 +150,23 @@
 								onclick="buscarUsuario();">BUSCAR</button>
 						</div>
 					</div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Nome</th>
-								<th scope="col">Ver</th>
-							</tr>
-						</thead>
-						<tbody>
 
-						</tbody>
-					</table>
+					<div style="height: 300px; overflow: scroll;">
+						<table class="table" id="tabelaresultados">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Ver</th>
+								</tr>
+							</thead>
+							<tbody>
 
+							</tbody>
+						</table>
+						
+					</div>
+					<span id="totalResultado"></span>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -174,7 +178,6 @@
 
 
 	<script type="text/javascript">
-	
 		function buscarUsuario() {
 
 			var nomeBusca = document.getElementById('nomeBusca').value;
@@ -182,22 +185,42 @@
 			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {//Validando que tem que ter valor pra buscar no banco
 
 				var urlAction = document.getElementById('formUser').action;
-			
-				$.ajax({
 
-					method : 'get',
-					url : urlAction,
-					data : 'nomeBusca=' + nomeBusca + '&acao=buscaUserAjax',
-					success : function(response) {
-						
-					}
+				$
+						.ajax(
+								{
 
-				}).fail(
-						function(xhr, status, errorThrown) {
-							alert('Erro ao buscar usuário por nome: '
-									+ xhr.responseText);
-						});
-				
+									method : 'get',
+									url : urlAction,
+									data : 'nomeBusca=' + nomeBusca
+											+ '&acao=buscaUserAjax',
+									success : function(response) {
+
+										var json = JSON.parse(response);
+
+										$('#tabelaresultados > tbody > tr')
+												.remove();
+
+										for (var p = 0; p < json.length; p++) {
+											$('#tabelaresultados > tbody')
+													.append(
+															'<tr> <td>'
+																	+ json[p].id
+																	+ ' </td><td>'
+																	+ json[p].nome
+																	+ ' </td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+										}
+										
+										document.getElementById('totalResultado').textContent = 'Resultados: ' + json.length;
+
+									}
+
+								}).fail(
+								function(xhr, status, errorThrown) {
+									alert('Erro ao buscar usuário por nome: '
+											+ xhr.responseText);
+								});
+
 			}
 
 		}
