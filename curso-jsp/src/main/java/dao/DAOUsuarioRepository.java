@@ -52,6 +52,33 @@ public class DAOUsuarioRepository {
 
 		return this.consultaUsuario(objeto.getLogin());
 	}
+	
+	public List<ModelLogin> consultaUsuarioList() throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * FROM model_login ";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		
+
+		ResultSet resultado = statement.executeQuery();
+
+		while (resultado.next()) {/* Percorrer as linhas do resultado */
+
+			ModelLogin modelLogin = new ModelLogin();
+
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setNome(resultado.getString("nome"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+
+	}
 
 	public List<ModelLogin> consultaUsuarioList(String nome) throws Exception {
 
