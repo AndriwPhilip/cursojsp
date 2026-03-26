@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!DOCTYPE html>
@@ -79,6 +79,19 @@
 																	class="float-label">E-mail:</label>
 															</div>
 
+
+															<div class="form-group form-default form-static-label">
+																<select class="form-control"
+																	aria-label="Default select example" name="perfil">
+																	<option disabled="disabled">[Selecione o Perfil]</option>
+																	<option value="ADMIN">Admin</option>
+																	<option value="SECRETARIA">Secretária</option>
+																	<option value="AUXILIAR">Auxiliar</option>
+																</select>
+																<span class="form-bar"></span> <label
+																	class="float-label">Perfil:</label>
+															</div>
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login"
 																	class="form-control" required="required"
@@ -124,11 +137,12 @@
 												</thead>
 												<tbody>
 													<c:forEach items='${modelLogins}' var='ml'>
-													      <tr>
-													       <td><c:out value="${ml.id}"></c:out></td>
-													       <td><c:out value="${ml.nome}"></c:out></td>
-													       <td><a class="btn btn-success" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}" >Ver</a></td>
-													      </tr>
+														<tr>
+															<td><c:out value="${ml.id}"></c:out></td>
+															<td><c:out value="${ml.nome}"></c:out></td>
+															<td><a class="btn btn-success"
+																href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+														</tr>
 													</c:forEach>
 
 												</tbody>
